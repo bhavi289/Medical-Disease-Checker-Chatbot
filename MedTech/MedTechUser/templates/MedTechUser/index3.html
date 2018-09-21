@@ -2,13 +2,14 @@
 <html lang="en" >
 
 <head>
+  {% load staticfiles %}
   <meta charset="UTF-8">
   <title>Emotional Chatbot</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
   
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.1/css/all.css'>
 
-      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
   
 </head>
@@ -39,12 +40,12 @@
     </div>
   </div>
 </div>
-  <script src='js/0299c8b36352c72cbfe8df48b.js'></script>
+  <script src='{% static 'js/0299c8b36352c72cbfe8df48b.js' %}'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js'></script>
 
   
 
-    <script  src="js/index.js"></script>
+    <script  src="{% static 'js/index.js' %}"></script>
 
 
 

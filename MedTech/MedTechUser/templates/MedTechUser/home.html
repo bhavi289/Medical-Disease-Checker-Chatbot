@@ -204,14 +204,16 @@ p { margin: 0; }
 	background: #fff;
 }
 
-.chat-history {
+#chat_history {
 	height: 252px;
 	padding: 8px 24px;
-	overflow-y: scroll;
+    overflow-x: hidden;
+	overflow-y: visible;
 }
 
 .chat-message {
-	margin: 16px 0;
+	margin: 0 0;
+    /* background-color: #e62727; */
 }
 
 .chat-message img {
@@ -226,11 +228,7 @@ p { margin: 0; }
 
 .chat-message-reply{
 	margin: 16px 0;
-}
-
-.chat-message-reply img {
-	border-radius: 50%;
-	float: right;
+    /* background-color: aqua; */
 }
 
 .chat-message-reply img {
@@ -239,15 +237,20 @@ p { margin: 0; }
 }
 
 .chat-message-content {
-	margin-left: 56px;
+	margin-left: 50%;
 }
 
 .chat-message-reply-content {
-	margin-left: 0;
+	margin-right: 50%;
 }
 
 .chat-time {
 	float: right;
+	font-size: 10px;
+}
+
+.chat-time-reply {
+	float: left;
 	font-size: 10px;
 }
 
@@ -257,7 +260,7 @@ p { margin: 0; }
 }
 </style>
 <body>
-
+    <center style="padding-top: 5%">
 	<div id="live-chat">
 		
 		<header class="clearfix">
@@ -274,17 +277,17 @@ p { margin: 0; }
 			
 			<div class="chat-history" id="chat_history">
 				
-				<div class="chat-message clearfix">
+				<div class="chat-message-reply clearfix">
 					
-                    <img src="http://gravatar.com/avatar/2c0ad52fc5943b78d6abe069cc08f320?s=32" alt="" width="32" height="32">
+                    <!-- <img src="http://gravatar.com/avatar/2c0ad52fc5943b78d6abe069cc08f320?s=32" alt="" width="32" height="32"> -->
 
-					<div class="chat-message-content clearfix">
+					<div class="chat-message-reply-content clearfix">
 						
-						<span class="chat-time">13:35</span>
+						<span class="chat-time-reply">13:35</span>
 
-						<h5>John Doe</h5>
+						<!-- <h5>John Doe</h5> -->
 
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, explicabo quasi ratione odio dolorum harum.</p>
+						<p>Hi, How you doing?</p>
 
 					</div>
 
@@ -292,10 +295,8 @@ p { margin: 0; }
 
 				<hr>
 
-				<div class="chat-message clearfix">
+				<!-- <div class="chat-message clearfix">
 					
-					<img src="http://gravatar.com/avatar/2c0ad52fc5943b78d6abe069cc08f320?s=32" alt="" width="32" height="32">
-
 					<div class="chat-message-content clearfix">
 						
 						<span class="chat-time">13:37</span>
@@ -306,14 +307,13 @@ p { margin: 0; }
 
 					</div> 
 
-				</div> 
+				</div>  -->
 
 				<hr>
 
-				<div class="chat-message-reply clearfix">
+				<!-- <div class="chat-message-reply clearfix">
 					
-                        <img style="float: right;" src="http://gravatar.com/avatar/2c0ad52fc5943b78d6abe069cc08f320?s=32" alt="" width="32" height="32">
-					<div class="chat-message-reply-content clearfix">
+                    <div class="chat-message-reply-content clearfix">
 						
 						<span class="chat-time">13:38</span>
 
@@ -323,9 +323,7 @@ p { margin: 0; }
 
                     </div> 
                     
-                    
-
-				</div>
+				</div> -->
 
 				<hr>
             </div> 
@@ -337,7 +335,8 @@ p { margin: 0; }
                 </fieldset>
             </div>
 		</div>
-	</div>
+    </div>
+    </center>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 	<script>
         (function() {
@@ -366,6 +365,12 @@ $('.chat-close').on('click', function(e) {
     
             function send_message()
             {
+                // var elem = document.getElementById('chat_history');
+                // elem.scrollTop = elem.scrollHeight;
+
+                $('#chat_history').animate({
+                    scrollTop: $('#chat_history').get(0).scrollHeight}, 2000);    
+
                 var message = $('#chat-message').val();
                 console.log(message);
                 $.ajax({
@@ -377,9 +382,15 @@ $('.chat-close').on('click', function(e) {
                         console.log(data.reply);
                         var chat_history = $('#chat_history').html();
     
-                        chat_history += message + '<br>';
-                        chat_history += data.reply + '<br>';
-    
+                        // chat_history += message + '<br>';
+                        // chat_history += data.reply + '<br>';
+
+                        sender_message = '<div class="chat-message clearfix"><div class="chat-message-content clearfix"><span class="chat-time">13:37</span><p>'+message+'</p></div> </div>' ;
+                        reply_message = '<div class="chat-message-reply clearfix"><div class="chat-message-reply-content clearfix"><span class="chat-time-reply">13:37</span><p>'+data.reply+'</p></div> </div>' ;
+                        
+                        chat_history += sender_message + '<hr>';
+                        chat_history += reply_message + '<hr>';
+
                         $('#chat_history').html(chat_history);
     
                         $('#chat-message').val(' ');
