@@ -1,1 +1,46 @@
-lksdclksclskmclskdc
+<html>
+    <head>
+        <title>MedTech</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.3.min.js" ></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="chat_history"></div>
+        <input type="text" id="chat-message" name="chat_message"><br>
+        <button type="button" onclick="send_message()">SUBMIT</button>
+    </body>
+    <script>
+        var p1 = document.getElementById("chat-message");
+        p1.addEventListener("keydown", function (e) {
+            if (e.keyCode === 13) {
+                send_message();
+            }
+        });
+
+        function send_message()
+        {
+            var message = $('#chat-message').val();
+            console.log(message);
+            $.ajax({
+                url: "{% url 'MedTechUser:send-message' %}",
+                type: "POST",
+                dataType: 'json',
+                data: { 'message': message, "csrfmiddlewaretoken": '{{ csrf_token }}' },
+                success: data => {
+                    console.log(data.reply);
+                    var chat_history = $('#chat_history').html();
+                    console.log(chat_history);
+
+                    chat_history += message + '<br>';
+                    chat_history += data.reply + '<br>';
+
+                    $('#chat_history').html(chat_history);
+                },
+                error: data => {
+                    alert(data.responseJSON.error);
+                }
+            });
+        }
+    </script>
+</html>
