@@ -1,54 +1,199 @@
-<!DOCTYPE html>
-<html lang="en" >
+<html>
+  {% load staticfiles %}
+    <head>
+        <title>MedTech</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.3.min.js" ></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript">
+          function FindPosition(oElement)
+          {
+            if(typeof( oElement.offsetParent ) != "undefined")
+            {
+              for(var posX = 0, posY = 0; oElement; oElement = oElement.offsetParent)
+              {
+                posX += oElement.offsetLeft;
+                posY += oElement.offsetTop;
+              }
+                return [ posX, posY ];
+              }
+              else
+              {
+                return [ oElement.x, oElement.y ];
+              }
+          }
+          function GetCoordinatesFront(e)
+          {
+            var PosX = 0;
+            var PosY = 0;
+            var ImgPos;
+            ImgPos = FindPosition(body_front);
+            if (!e) var e = window.event;
+            if (e.pageX || e.pageY)
+            {
+              PosX = e.pageX;
+              PosY = e.pageY;
+            }
+            else if (e.clientX || e.clientY)
+              {
+                PosX = e.clientX + document.body.scrollLeft
+                  + document.documentElement.scrollLeft;
+                PosY = e.clientY + document.body.scrollTop
+                  + document.documentElement.scrollTop;
+              }
+            PosX = PosX - ImgPos[0];
+            PosY = PosY - ImgPos[1];
+            document.getElementById("x").innerHTML = PosX;
+            document.getElementById("y").innerHTML = PosY;
+          /*
+            FRONT - 
+              left eye (184, 51)(194, 52)
+              right eye (203, 50)(214, 53)
+              head (174, 26)(222, 44)
+              nose (196, 53)(204, 62)
+              stomach (155, 163)(241, 225)
+              chest (150, 112)(246, 158)
+              left knee (157, 364)(192, 399)
+              right knee (205, 365)(236, 397)
+              legs (143, 287)(247, 526)
+            BACK -
+              back (559, 93)(657, 224)
+          */
+            if((PosX>=184 && PosX<=194 && PosY>=50 && PosY<=53) || (PosX>=203 && PosX<=214 && PosY>=50 && PosY<=53)){
+              document.getElementById("front_body_part").innerHTML = "eyes";
+              // console.log("eyes");
+            }
+            else if(PosX>=174 && PosX<=222 && PosY>=26 && PosY<=44){
+              document.getElementById("front_body_part").innerHTML = "head";
 
-<head>
-  <meta charset="UTF-8">
-  <title>Emotional Chatbot</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
-  
-  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.1/css/all.css'>
+              console.log("head")
+            }
+            else if(PosX>=196 && PosX<=204 && PosY>=53 && PosY<=62){
+              document.getElementById("front_body_part").innerHTML = "nose";
 
-      <link rel="stylesheet" href="css/style.css">
+              console.log("nose")
+            }
+            else if(PosX>=155 && PosX<=241 && PosY>=163 && PosY<=225){
+              document.getElementById("front_body_part").innerHTML = "stomach";
 
-  
-</head>
+              console.log("stomach")
+            }
+            else if(PosX>=150 && PosX<=246 && PosY>=112 && PosY<=158){
+              document.getElementById("front_body_part").innerHTML = "chest";
 
-<body>
+              console.log("chest")
+            }
+            else if((PosX>=158 && PosX<=191 && PosY>=361 && PosY<=399) || (PosX>=205 && PosX<=236 && PosY>=365 && PosY<=397)){
+              document.getElementById("front_body_part").innerHTML = "knees";
+              
+              console.log("knees");
+            }
+            else if(PosX>=143 && PosX<=247 && PosY>=287 && PosY<=526){
+              document.getElementById("front_body_part").innerHTML = "legs";
 
-  
-<div id="chat-wrapper">
-  <div id="chat-bot-mood">
-    <div id="chat-bot-mood-icon"></div>
-    <div id="chat-bot-mood-label">
-      <h1 id="chat-bot-mood-text">Chatbot is feeling</h1>
-      <h1 id="chat-bot-mood-value">Mood</h1>
-    </div>
-  </div>
-  <div id="letter-pool"></div>
-  <div id="temp-letter-pool"></div>
-  <div id="letter-overlay"></div>
-  <div id="chat-message-window">
-    <div id="message-input-wrapper">
-      <div id="message-input">
-        <input id="message-input-field" type="text" placeholder="Type a message" maxlength="100"/>
-        <div id="send-message-button"><i class="far fa-arrow-alt-circle-right"></i></div>
-      </div>
-    </div>
-    <div class="scroll-bar" id="chat-message-column-wrapper">
-      <div class="static" id="chat-message-column"></div>
-    </div>
-  </div>
-</div>
-  <script src='js/0299c8b36352c72cbfe8df48b.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js'></script>
+              console.log("legs")
+            }
+            else if((PosX>=27 && PosX<=72 && PosY>=242 && PosY<=284) || (PosX>=324 && PosX<=378 && PosY>=241 && PosY<=279)){
+              document.getElementById("front_body_part").innerHTML = "hands";
+              
+              console.log("hands");
+            }
+            else if((PosX>=61 && PosX<=142 && PosY>=107 && PosY<=249) || (PosX>=248 && PosX<=346 && PosY>=108 && PosY<=232)){
+              document.getElementById("front_body_part").innerHTML = "arms";
+              
+              console.log("arms")
+            }  
+          
+            
+          }
+          function GetCoordinatesBack(e)
+          {
+            var PosX = 0;
+            var PosY = 0;
+            var ImgPos;
+            ImgPos = FindPosition(body_front);
+            if (!e) var e = window.event;
+            if (e.pageX || e.pageY)
+            {
+              PosX = e.pageX;
+              PosY = e.pageY;
+            }
+            else if (e.clientX || e.clientY)
+              {
+                PosX = e.clientX + document.body.scrollLeft
+                  + document.documentElement.scrollLeft;
+                PosY = e.clientY + document.body.scrollTop
+                  + document.documentElement.scrollTop;
+              }
+            PosX = PosX - ImgPos[0];
+            PosY = PosY - ImgPos[1];
+            document.getElementById("x2").innerHTML = PosX;
+            document.getElementById("y2").innerHTML = PosY;
+            if(PosX>=554 && PosX<=654 && PosY>=96 && PosY<=222){
+              // console.log("back")
+              document.getElementById("back_body_part").innerHTML = "Back";
+            }
+          }
+          </script>
+      </head>
+    <body>
+        {% if first_question == 1 %}
+        <div id="chat_history">Hello Human! How are you feeling? Please mention your general body feeling.</div>
+        I am Feeling <input type="text" id="chat-message" value="" name="chat_message"><br>
+        {% else %}
+        <div id="chat_history">Hello Human! Select the body part in which you are having problems through the figures given.</div>
+        {% endif %}        
+        <button type="button" onclick="send_message()">SUBMIT</button>
+        {% if first_question == 2 %}
+        <img id="body_front" alt="" src="{% static 'img/body_front.jpg' %}" width="400" height="600" />
+        <img id="body_back" alt="" src="{% static 'img/body_back.jpg' %}" width="400" height="600" />
+        
+        <script type="text/javascript">
+        var body_front = document.getElementById("body_front");
+        var body_back = document.getElementById("body_back");
+        
+        body_front.onmousedown = GetCoordinatesFront;
+        body_back.onmousedown = GetCoordinatesBack;
+        </script>
+        
+        <p>X:<span id="x"></span> Y:<span id="y"></span></p>
+        <b id="front_body_part"> </b>
+        <p>X2:<span id="x2"></span> Y2:<span id="y2"></span></p>
+        <b id="back_body_part"> </b>
+        {% endif %}
+    </body>
+    <script>
+        var p1 = document.getElementById("chat-message");
+        p1.addEventListener("keydown", function (e) {
+            if (e.keyCode === 13) {
+                send_message();
+            }
+        });
 
-  
+        function send_message()
+        {
+            var message = $('#chat-message').val();
+            console.log(message);
+            $.ajax({
+                url: "{% url 'MedTechUser:send-message' %}",
+                type: "POST",
+                dataType: 'json',
+                data: { 'message': message, "csrfmiddlewaretoken": '{{ csrf_token }}' },
+                success: data => {
+                    var chat_history = $('#chat_history').html();
 
-    <script  src="js/index.js"></script>
+                    chat_history += message + '<br>';
+                    chat_history += data.reply + '<br>';
 
+                    $('#chat_history').html(chat_history);
 
-
-
-</body>
-
+                    $('#chat-message').val(' ');
+                },
+                error: data => {
+                    alert(data.responseJSON.error);
+                }
+            });
+        }
+    </script>
+    
 </html>
