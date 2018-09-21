@@ -28,14 +28,14 @@
                 dataType: 'json',
                 data: { 'message': message, "csrfmiddlewaretoken": '{{ csrf_token }}' },
                 success: data => {
-                    console.log(data.reply);
                     var chat_history = $('#chat_history').html();
-                    console.log(chat_history);
 
                     chat_history += message + '<br>';
                     chat_history += data.reply + '<br>';
 
                     $('#chat_history').html(chat_history);
+
+                    $('#chat-message').val(' ');
                 },
                 error: data => {
                     alert(data.responseJSON.error);
