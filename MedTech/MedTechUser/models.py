@@ -11,12 +11,15 @@ class AllFeelings(models.Model):
         return str(self.permuterm)+ " -- "+str(self.name)
 class AllBodyParts(models.Model):
     name = models.CharField(max_length=20, null=True, blank=True)
+    permuterm = models.CharField(max_length=20, null=True, blank=True)
 
 class AllDiseases(models.Model):    
     name = models.CharField(max_length=20, null=True, blank=True)
+    # permuterm = models.CharField(max_length=20, null=True, blank=True)
 
 class AllSymptoms(models.Model):
     name = models.CharField(max_length=20, null=True, blank=True)
+    permuterm = models.CharField(max_length=20, null=True, blank=True)
 
 class FeelingsToDisease(models.Model):
     feeling = models.ForeignKey(AllFeelings,on_delete=models.CASCADE, null=True, blank=True)

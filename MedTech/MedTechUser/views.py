@@ -8,9 +8,13 @@ import stringdist
 from django.db.models import Q
 import random
 
+count = 0
+
 def home(request):
-    n = random.randint(1,2)
-    return render(request, 'MedTechUser/index3.html', {'first_question':n})
+    global count
+    return render(request, 'MedTechUser/index3.html', {'count':0})
+    # if request.is_ajax():
+
 
 def analyze_and_reply(message):
     if message is not None:
@@ -21,7 +25,11 @@ def analyze_and_reply(message):
 def sendMessage(request):
     context = ''
     if request.is_ajax():
+        message = (request.POST.get('message', None))
+        print(message.split(','))
         reply = analyze_and_reply(request.POST.get('message', None))
+        # print (reply)
+        
         context = { 'reply': reply }
         res = JsonResponse(context, status=200)
         res['Access-Control-Allow-Origin']="*"

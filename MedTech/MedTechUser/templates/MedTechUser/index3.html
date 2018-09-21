@@ -6,6 +6,7 @@
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type="text/javascript">
+          var ar = [];
           function FindPosition(oElement)
           {
             if(typeof( oElement.offsetParent ) != "undefined")
@@ -43,66 +44,85 @@
               }
             PosX = PosX - ImgPos[0];
             PosY = PosY - ImgPos[1];
-            document.getElementById("x").innerHTML = PosX;
-            document.getElementById("y").innerHTML = PosY;
-          /*
-            FRONT - 
-              left eye (184, 51)(194, 52)
-              right eye (203, 50)(214, 53)
-              head (174, 26)(222, 44)
-              nose (196, 53)(204, 62)
-              stomach (155, 163)(241, 225)
-              chest (150, 112)(246, 158)
-              left knee (157, 364)(192, 399)
-              right knee (205, 365)(236, 397)
-              legs (143, 287)(247, 526)
-            BACK -
-              back (559, 93)(657, 224)
-          */
+          
             if((PosX>=184 && PosX<=194 && PosY>=50 && PosY<=53) || (PosX>=203 && PosX<=214 && PosY>=50 && PosY<=53)){
-              document.getElementById("front_body_part").innerHTML = "eyes";
+              ar.push("eyes")
+              document.getElementById("chat-message").value =ar;
+
               // console.log("eyes");
             }
             else if(PosX>=174 && PosX<=222 && PosY>=26 && PosY<=44){
-              document.getElementById("front_body_part").innerHTML = "head";
+              ar.push("head");
+              document.getElementById("chat-message").value =ar;
 
               console.log("head")
             }
             else if(PosX>=196 && PosX<=204 && PosY>=53 && PosY<=62){
-              document.getElementById("front_body_part").innerHTML = "nose";
+              ar.push("nose");
+              document.getElementById("chat-message").value =ar;
+
 
               console.log("nose")
             }
             else if(PosX>=155 && PosX<=241 && PosY>=163 && PosY<=225){
-              document.getElementById("front_body_part").innerHTML = "stomach";
+              ar.push("stomach");
+              document.getElementById("chat-message").value =ar;
+
 
               console.log("stomach")
             }
             else if(PosX>=150 && PosX<=246 && PosY>=112 && PosY<=158){
-              document.getElementById("front_body_part").innerHTML = "chest";
+              ar.push("chest");
+              document.getElementById("chat-message").value =ar;
+
 
               console.log("chest")
             }
             else if((PosX>=158 && PosX<=191 && PosY>=361 && PosY<=399) || (PosX>=205 && PosX<=236 && PosY>=365 && PosY<=397)){
-              document.getElementById("front_body_part").innerHTML = "knees";
+              ar.push("knees");
+              document.getElementById("chat-message").value =ar;
+              
               
               console.log("knees");
             }
             else if(PosX>=143 && PosX<=247 && PosY>=287 && PosY<=526){
-              document.getElementById("front_body_part").innerHTML = "legs";
+              ar.push("legs");
+              document.getElementById("chat-message").value =ar;
 
               console.log("legs")
             }
             else if((PosX>=27 && PosX<=72 && PosY>=242 && PosY<=284) || (PosX>=324 && PosX<=378 && PosY>=241 && PosY<=279)){
-              document.getElementById("front_body_part").innerHTML = "hands";
+              ar.push("hands");
+              
+              document.getElementById("chat-message").value =ar;
               
               console.log("hands");
             }
             else if((PosX>=61 && PosX<=142 && PosY>=107 && PosY<=249) || (PosX>=248 && PosX<=346 && PosY>=108 && PosY<=232)){
-              document.getElementById("front_body_part").innerHTML = "arms";
+              ar.push("arms");
+              
+              document.getElementById("chat-message").value = ar;
               
               console.log("arms")
             }  
+            else if(PosX>=184 && PosX<=218 && PosY>=82 && PosY<=102){
+              ar.push("neck");
+              
+              document.getElementById("chat-message").value = ar;
+              console.log("neck")
+            }
+            else if(PosX>=156 && PosX<=248 && PosY>=240 && PosY<=278){
+              ar.push("reproductive");
+              
+              document.getElementById("chat-message").value = ar;
+              console.log("reproductive")
+            }
+            else if(PosX>=277 && PosX<=392 && PosY>=334 && PosY<=596){
+              ar.push("other");
+              
+              document.getElementById("chat-message").value = ar;
+              console.log('other')
+            }
           
             
           }
@@ -127,27 +147,35 @@
               }
             PosX = PosX - ImgPos[0];
             PosY = PosY - ImgPos[1];
-            document.getElementById("x2").innerHTML = PosX;
-            document.getElementById("y2").innerHTML = PosY;
             if(PosX>=554 && PosX<=654 && PosY>=96 && PosY<=222){
               // console.log("back")
-              document.getElementById("back_body_part").innerHTML = "Back";
+              ar.push("arms");
+              document.getElementById("chat-message").value =ar;
             }
           }
           </script>
       </head>
     <body>
-        {% if first_question == 1 %}
-        <div id="chat_history">Hello Human! How are you feeling? Please mention your general body feeling.</div>
-        I am Feeling <input type="text" id="chat-message" value="" name="chat_message"><br>
-        {% else %}
-        <div id="chat_history">Hello Human! Select the body part in which you are having problems through the figures given.</div>
-        {% endif %}        
+        <!-- <div id="feelings">
+          <div id="chat_history">Allright then tell how are you feeling? Please mention your general body feeling.</div>
+          I am Feeling <input type="text" id="chat-message" value="" name="chat_message"><br>
+          <button type="button" onclick="send_message()">SUBMIT</button>
+        </div> -->
+
+        <div id="body_parts">
+          <div id="">Hello Human! Do You have any pain or inconvenience in any body part?</div>
+          <button id="body_yes" type="button" onclick="yesSelectBody()">Yes</button>
+          <button id="body_no" type="button" onclick="noSelectBody()">No</button>
+          <img id="body_front" alt="" src="{% static 'img/body_front.jpg' %}" width="400" height="600" />
+          <img id="body_back" alt="" src="{% static 'img/body_back.jpg' %}" width="400" height="600" />
+          
+          <div id="chat_history_body"></div>
+        </div>
+        <b id="body_part_display"> </b>
+        <input style="width:100%" type="text" id="chat-message" value="" name="chat_message"><br>
         <button type="button" onclick="send_message()">SUBMIT</button>
-        {% if first_question == 2 %}
-        <img id="body_front" alt="" src="{% static 'img/body_front.jpg' %}" width="400" height="600" />
-        <img id="body_back" alt="" src="{% static 'img/body_back.jpg' %}" width="400" height="600" />
-        
+        <!-- <b id="back_body_part"> </b> -->
+
         <script type="text/javascript">
         var body_front = document.getElementById("body_front");
         var body_back = document.getElementById("body_back");
@@ -156,19 +184,37 @@
         body_back.onmousedown = GetCoordinatesBack;
         </script>
         
-        <p>X:<span id="x"></span> Y:<span id="y"></span></p>
-        <b id="front_body_part"> </b>
-        <p>X2:<span id="x2"></span> Y2:<span id="y2"></span></p>
-        <b id="back_body_part"> </b>
-        {% endif %}
+        
     </body>
     <script>
+        window.onload = function() {
+          var link = document.getElementById('feelings');
+          link.style.display = 'none';
+        };
+
         var p1 = document.getElementById("chat-message");
         p1.addEventListener("keydown", function (e) {
             if (e.keyCode === 13) {
                 send_message();
             }
         });
+        
+        function yesSelectBody(){
+          console.log("yes")
+          var chat_history = $('#chat_history_body').html();
+          chat_history += "<span style='color:green'>Yes</span>" + '<br>';
+          chat_history += "Select Body Parts From the image given - "
+          $('#chat_history_body').html(chat_history);
+          $("#body_yes").prop("disabled",true);
+          $("#body_no").prop("disabled",true);
+          
+        }
+
+        function noSelectBody(){
+          var link = document.getElementById('feelings');
+          link.style.display = '';
+          document.getElementById('body_parts').style.display = 'none';
+        }
 
         function send_message()
         {
@@ -180,12 +226,13 @@
                 dataType: 'json',
                 data: { 'message': message, "csrfmiddlewaretoken": '{{ csrf_token }}' },
                 success: data => {
-                    var chat_history = $('#chat_history').html();
+                  console.log("data is", data)
+                    var chat_history = $('#chat_history_body').html();
 
                     chat_history += message + '<br>';
                     chat_history += data.reply + '<br>';
 
-                    $('#chat_history').html(chat_history);
+                    $('#chat_history_body').html(chat_history);
 
                     $('#chat-message').val(' ');
                 },
