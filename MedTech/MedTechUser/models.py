@@ -5,27 +5,25 @@ from django.db import models
 
 class AllFeelings(models.Model):
     name = models.CharField(max_length=20, null=True, blank=True)
-    permuterm = models.CharField(max_length=20, null=True, blank=True)
-
+    # permuterm = models.CharField(max_length=50, null=True, blank=True)
+    disease = models.CharField(max_length=100, null=True, blank=True)
     def __str__(self):
-        return str(self.permuterm)+ " -- "+str(self.name)
+        return str(self.name) + " -- " + str(self.disease)
+
+
 class AllBodyParts(models.Model):
     name = models.CharField(max_length=20, null=True, blank=True)
+    permuterm = models.CharField(max_length=50, null=True, blank=True)
 
-class AllDiseases(models.Model):    
-    name = models.CharField(max_length=20, null=True, blank=True)
+    def __str__(self):
+        return str(self.permuterm) + ' -- ' + str(self.name)
 
-class AllSymptoms(models.Model):
-    name = models.CharField(max_length=20, null=True, blank=True)
-
-class FeelingsToDisease(models.Model):
-    feeling = models.ForeignKey(AllFeelings,on_delete=models.CASCADE, null=True, blank=True)
-    disease = models.ForeignKey(AllDiseases,on_delete=models.CASCADE, null=True, blank=True)
 
 class SymptomsToDisease(models.Model):
-    symptom = models.ForeignKey(AllSymptoms, on_delete=models.CASCADE, null=True, blank=True)
-    disease = models.ForeignKey(AllDiseases,on_delete=models.CASCADE, null=True, blank=True)
+    symptom = models.CharField(max_length=200, null=True, blank=True)
+    body_part = models.CharField(max_length=50, null=True, blank=True)
+    disease = models.CharField(max_length=100, null=True, blank=True)
 
-class BodypartToSymptom(models.Model):
-    body_part = models.ForeignKey(AllBodyParts, on_delete=models.CASCADE, null=True, blank=True)
-    symptom_to_disease = models.ForeignKey(SymptomsToDisease, on_delete=models.CASCADE, null=True, blank=True)
+
+
+    
