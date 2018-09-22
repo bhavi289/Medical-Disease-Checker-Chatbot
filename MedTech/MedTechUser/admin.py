@@ -4,3 +4,5 @@ from .models import *
 admin.site.register(AllFeelings),
 admin.site.register(AllBodyParts),
 admin.site.register(SymptomsToDisease),
+admin.site.register(TempSymptomsToDisease)
+admin.site.register(TempxAllFeelings)

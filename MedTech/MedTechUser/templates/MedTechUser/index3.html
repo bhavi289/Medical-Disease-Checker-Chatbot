@@ -215,16 +215,17 @@
           link.style.display = '';
           document.getElementById('body_parts').style.display = 'none';
         }
-
+        var count = 0;
         function send_message()
         {
+          count += 1
             var message = $('#chat-message').val();
             console.log(message);
             $.ajax({
                 url: "{% url 'MedTechUser:send-message' %}",
                 type: "POST",
                 dataType: 'json',
-                data: { 'message': message, "csrfmiddlewaretoken": '{{ csrf_token }}' },
+                data: { 'message': message, "count":count, "csrfmiddlewaretoken": '{{ csrf_token }}' },
                 success: data => {
                   console.log("data is", data)
                     var chat_history = $('#chat_history_body').html();

@@ -15,6 +15,8 @@ count = 0
 
 def home(request):
     global count
+    TempSymptomsToDisease.objects.all().delete()
+    TempxAllFeelings.objects.all().delete()
     return render(request, 'MedTechUser/index3.html', {'count':0})
     # if request.is_ajax():
 
@@ -29,10 +31,24 @@ def sendMessage(request):
     context = ''
     if request.is_ajax():
         message = (request.POST.get('message', None))
-        print(message.split(','))
-        reply = analyze_and_reply(request.POST.get('message', None))
-        # print (reply)
-        
+        count = (request.POST.get('count', None))
+        reply = ""
+        print (count)
+        if str(count) == '1':
+            for part in message.split(','):
+                print(part)
+                global bs
+                bs = SymptomsToDisease.objects.filter(Q(body_part__contains=part)|Q(body_part=part)|Q(body_part__startswith=part)|Q(body_part__endswith=part))
+                for b in bs:
+                    TempSymptomsToDisease(symptom = b.symptom, body_part=b.body_part, disease=b.disease).save()
+            reply = "Great! I've identified the body parts - "+str(message)+". Now tell me how are you feeling in general?"
+        elif count == '2':
+            l = query_feeling(message)
+            reply = "Let me know if you're feeling anything else like Dizziness or Nausea or Fever or Heavy.."
+            print ("l is ", l)
+            for q in l:
+                print (q)
+                TempxAllFeelings(name = q['name'], disease = q['disease']).save()
         context = { 'reply': reply }
         res = JsonResponse(context, status=200)
         res['Access-Control-Allow-Origin']="*"
@@ -139,30 +155,30 @@ def all_string(symptom, final_results):
         return final_results
 
 
-def query_feeling(request):
-    if request.method == 'GET':
-        st = LancasterStemmer()
-        feeling = request.GET.get('feeling')
-        word_tokens = word_tokenize(feeling)
-        stemmed_string = ''
-        # nltk.download('stopwords')
-        # nltk.download('punkt')
-        stopwords = nltk.corpus.stopwords.words('english')
-        stopwords.extend([',','!','.','@','`','~','#', '$', '%', '^', '&', '*', '(', ')', '-','_','=','+','[','{','}',']',';',':','<','>','/','?'])
-        query = ''
-        for word in word_tokens:
-            if word not in stopwords:
-                query += st.stem(word)
-        stemmed_data = query
-        print(stemmed_data)
-        final_results = []
-        results = all_string(stemmed_data[::-1], final_results)
-        final = list()
-        feeling_result = list()
-        for result in results:
-            if str(result.name) not in feeling_result:
-                final.append({'feeling':result.name})
-                feeling_result.append(result.name)
-        print(len(final))
-    return HttpResponse(final)
+def query_feeling(feeling):
+    # if request.method == 'GET':
+    st = LancasterStemmer()
+    # feeling = request.GET.get('feeling')
+    word_tokens = word_tokenize(feeling)
+    stemmed_string = ''
+    # nltk.download('stopwords')
+    # nltk.download('punkt')
+    stopwords = nltk.corpus.stopwords.words('english')
+    stopwords.extend([',','!','.','@','`','~','#', '$', '%', '^', '&', '*', '(', ')', '-','_','=','+','[','{','}',']',';',':','<','>','/','?'])
+    query = ''
+    for word in word_tokens:
+        if word not in stopwords:
+            query += st.stem(word)
+    stemmed_data = query
+    print(stemmed_data)
+    final_results = []
+    results = all_string(stemmed_data[::-1], final_results)
+    final = list()
+    feeling_result = list()
+    for result in results:
+        if str(result.name) not in feeling_result:
+            final.append({'name':result.name, "disease":result.disease})
+            feeling_result.append(result.name)
+    print(len(final))
+    return (final)
     # return render(request, 'MedTechUser/feeling_reslt.html' ,{'final':final, })
