@@ -17,6 +17,7 @@ def home(request):
     global count
     TempSymptomsToDisease.objects.all().delete()
     TempxAllFeelings.objects.all().delete()
+    TopDiseases.objects.all().delete()
     return render(request, 'MedTechUser/home.html', {'count':0})
     # if request.is_ajax():
 
@@ -24,6 +25,7 @@ def home2(request):
     global count
     TempSymptomsToDisease.objects.all().delete()
     TempxAllFeelings.objects.all().delete()
+    TopDiseases.objects.all().delete()
     return render(request, 'MedTechUser/index3.html', {'count':0})
 
 
@@ -33,8 +35,14 @@ def analyze_and_reply(message):
         reply = 'REPLY THIS'
         return reply
 
+def most_common(lst):
+    return max(set(lst), key=lst.count)
+
 def sendMessage(request):
     context = ''
+    import itertools
+    import operator
+
     if request.is_ajax():
         message = (request.POST.get('message', None))
         count = (request.POST.get('count', None))
@@ -56,17 +64,109 @@ def sendMessage(request):
                 print (q)
                 TempxAllFeelings(name = q['name'], disease = q['disease']).save()
         elif count == '3':
-            x = TempSymptomsToDisease.objects.all()
-            y = TempxAllFeelings.objects.all()
-            li = []
-            for i in x:
-                for j in y:
-                    if i.disease == j.disease:
-                        li.append(i.disease)
-            print (li)
-            for i in li:
-                obj = TempSymptomsToDisease.objects.filter(disease=i)
-                AskingSymptoms(disease = obj.disease, symptom = obj.symptom).save()
+            try:
+                x = TempSymptomsToDisease.objects.all()
+                y = TempxAllFeelings.objects.all()
+                li = []
+                for i in x:
+                    for j in y:
+                        if i.disease == j.disease:
+                            li.append(i.disease)
+                print (li)
+                top=[]
+                most = most_common(li)
+                top.append(most)
+
+                li = [x for x in li if x != most]
+                most = most_common(li)
+                top.append(most)
+
+                li = [x for x in li if x != most]
+                most = most_common(li)
+                top.append(most)
+                
+                print(top)
+
+                for t in top:
+                    TopDiseases(disease = t).save()
+
+                tsd = TempSymptomsToDisease.objects.filter(disease = top[0])[0]
+                reply = "Are you having "+ str(tsd.symptom)
+            except:
+                reply = "I'm sorry I dont seem to know your diseaese"
+    
+        elif count == '4':
+            print("here")
+            from textblob import TextBlob
+            text = message
+            blob = TextBlob(text)
+            td = TopDiseases.objects.all()
+            for sentence in blob.sentences:
+                print(sentence.sentiment.polarity)
+            print (message)
+            if message.strip(' ')=="yes":
+                print(len(td))
+                print(td.last().disease)
+                reply = str("you have") + str(td.last().disease)
+                sp = Specialist.objects.filter(disease=td.last().disease)[0]
+                if(sp):
+                    reply += ". You must contact a " + sp.doctor
+                    import webbrowser
+                    webbrowser.open('https://www.google.co.in/search?q='+sp.doctor+'+near+me')
+                    # print (reply)
+                td.last().delete()
+            else:
+                tsd = TempSymptomsToDisease.objects.filter(disease = td.last().disease)[0]
+                td.last().delete()
+                reply = "Ok Do you have " + tsd.symptom
+        
+        elif count == '5':
+            print("here")
+            from textblob import TextBlob
+            text = message
+            blob = TextBlob(text)
+            td = TopDiseases.objects.all()
+            for sentence in blob.sentences:
+                print(sentence.sentiment.polarity)
+            if message.strip(' ')=="yes":
+                print(len(td))
+                print(td.last().disease)
+                reply = str("you have") + str(td.last().disease)
+                if(sp):
+                    reply += ". You must contact a " + sp.doctor
+                    import webbrowser
+                    webbrowser.open('https://www.google.co.in/search?q='+sp.doctor+'+near+me')
+                td.last().delete()
+            else:
+                tsd = TempSymptomsToDisease.objects.filter(disease = td.last().disease)[0]
+                td.last().delete()
+
+                reply = "Ok Do you have " + tsd.symptom
+        
+        elif count == '6':
+            print("here")
+            from textblob import TextBlob
+            text = message
+            blob = TextBlob(text)
+            td = TopDiseases.objects.all()
+            for sentence in blob.sentences:
+                print(sentence.sentiment.polarity)
+            if message.strip(' ')=="yes":
+                print(len(td))
+                print(td.last().disease)
+                reply = str("you have") + str(td.last().disease)
+                if(sp):
+                    reply += ". You must contact a " + sp.doctor
+                    import webbrowser
+                    webbrowser.open('https://www.google.co.in/search?q='+sp.doctor+'+near+me')
+                td.last().delete()
+            else:
+                reply = "I'm Sorry im not able to understand your disease. please try again"
+
+
+
+            
+                
 
                 
         context = { 'reply': reply }
@@ -119,13 +219,18 @@ def insertData(request):
         csvfile = request.FILES.get('data_file', False)
         count = 0
         for row in csvfile:
-            row = str(row)[2:-3].split('|')
-            print(row[0], row[1], row[2])
-            instance = SymptomsToDisease()
-            instance.symptom = str(row[2])
-            instance.body_part = str(row[1])
-            instance.disease = str(row[0])
-            instance.save()
+            print (row)
+            row = str(row).split(',')
+
+            Specialist(disease = row[0][2:], doctor = row[1]).save()
+            # print(row[0], row[1], row[2])
+            # instance = SymptomsToDisease()
+            # instance.symptom = str(row[2])
+            # instance.body_part = str(row[1])
+            # instance.disease = str(row[0])
+            # instance.save()
+        return HttpResponse("done")
+        
         #     array = str(row).split('|')
         #     # print(array[0].replace("b'", ''), " ---> ", array[1].replace("\r\n'", ''))
         #     sym = str(array[1]).split(',')
@@ -152,8 +257,8 @@ def insertData(request):
             # # stemmed = StemData(str(row[1]))
             # # # print(stemmed, stemmed[-1:])
             # # all_possible_string(stemmed[::-1], str(row[1]), str(row[0]))
-            count += 1
-        return HttpResponse("success")
+        #     count += 1
+        # return HttpResponse("success")
 
 def all_string(symptom, final_results):
     # print(final_results)

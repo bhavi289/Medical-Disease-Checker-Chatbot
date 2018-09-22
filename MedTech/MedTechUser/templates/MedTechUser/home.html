@@ -206,10 +206,11 @@
               }
             PosX = PosX - ImgPos[0];
             PosY = PosY - ImgPos[1];
-            if(PosX>=554 && PosX<=654 && PosY>=96 && PosY<=222){
-              // console.log("back")
-              ar.push("arms");
-              document.getElementById("chat-message").value =ar;
+            console.log(PosX, PosY)
+            if(PosX>=0 && PosY>=0){
+              console.log("back")
+              ar.push("back");
+              document.getElementById("chat-message").value = ar;
             }
           }
 	</script>

@@ -39,3 +39,11 @@ class TempxAllFeelings(models.Model):
 class AskingSymptoms(models.Model):
     disease = models.CharField(max_length=100, null=True, blank=True)
     symptom = models.CharField(max_length=100, null=True, blank=True)
+
+class TopDiseases(models.Model):
+    disease = models.CharField(max_length=100, null=True, blank=True)
+
+class Specialist(models.Model):
+    disease = models.CharField(max_length=100, null=True, blank=True)
+    doctor = models.CharField(max_length=100, null=True, blank=True)
+    
