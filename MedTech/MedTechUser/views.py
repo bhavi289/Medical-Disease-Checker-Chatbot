@@ -17,8 +17,14 @@ def home(request):
     global count
     TempSymptomsToDisease.objects.all().delete()
     TempxAllFeelings.objects.all().delete()
-    return render(request, 'MedTechUser/index3.html', {'count':0})
+    return render(request, 'MedTechUser/home.html', {'count':0})
     # if request.is_ajax():
+
+def home2(request):
+    global count
+    TempSymptomsToDisease.objects.all().delete()
+    TempxAllFeelings.objects.all().delete()
+    return render(request, 'MedTechUser/index3.html', {'count':0})
 
 
 def analyze_and_reply(message):
@@ -33,7 +39,7 @@ def sendMessage(request):
         message = (request.POST.get('message', None))
         count = (request.POST.get('count', None))
         reply = ""
-        print (count)
+        print(message, count)
         if str(count) == '1':
             for part in message.split(','):
                 print(part)
@@ -50,6 +56,7 @@ def sendMessage(request):
                 print (q)
                 TempxAllFeelings(name = q['name'], disease = q['disease']).save()
         context = { 'reply': reply }
+        print(context)
         res = JsonResponse(context, status=200)
         res['Access-Control-Allow-Origin']="*"
         return res

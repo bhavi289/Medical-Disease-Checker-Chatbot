@@ -1,8 +1,8 @@
-<form method="post" action="{% url 'MedTechUser:insert_data' %}" enctype="multipart/form-data">
+<!-- <form method="post" action="{% url 'MedTechUser:insert_data' %}" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="data_file">
     <button type="submit">submit</button>
-</form>
+</form> -->
 <!-- <html>
     <head>
         <title>MedTech</title>
@@ -53,14 +53,166 @@
 <!doctype html>
 <html lang="en">
 <head>
-
+	{% load staticfiles %}
 	<meta charset="UTF-8">
 	<title>Live Chat</title>
 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700">
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.3.min.js" ></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script>
+		  var ar = [];
+          function FindPosition(oElement)
+          {
+            if(typeof( oElement.offsetParent ) != "undefined")
+            {
+              for(var posX = 0, posY = 0; oElement; oElement = oElement.offsetParent)
+              {
+                posX += oElement.offsetLeft;
+                posY += oElement.offsetTop;
+              }
+                return [ posX, posY ];
+              }
+              else
+              {
+                return [ oElement.x, oElement.y ];
+              }
+          }
+          function GetCoordinatesFront(e)
+          {
+            var PosX = 0;
+            var PosY = 0;
+            var ImgPos;
+            ImgPos = FindPosition(body_front);
+            if (!e) var e = window.event;
+            if (e.pageX || e.pageY)
+            {
+              PosX = e.pageX;
+              PosY = e.pageY;
+            }
+            else if (e.clientX || e.clientY)
+              {
+                PosX = e.clientX + document.body.scrollLeft
+                  + document.documentElement.scrollLeft;
+                PosY = e.clientY + document.body.scrollTop
+                  + document.documentElement.scrollTop;
+              }
+            PosX = PosX - ImgPos[0];
+            PosY = PosY - ImgPos[1];
+          
+            if((PosX>=184 && PosX<=194 && PosY>=50 && PosY<=53) || (PosX>=203 && PosX<=214 && PosY>=50 && PosY<=53)){
+              ar.push("eyes")
+              document.getElementById("chat-message").value =ar;
+
+              // console.log("eyes");
+            }
+            else if(PosX>=174 && PosX<=222 && PosY>=26 && PosY<=44){
+              ar.push("head");
+              document.getElementById("chat-message").value =ar;
+
+              console.log("head")
+            }
+            else if(PosX>=196 && PosX<=204 && PosY>=53 && PosY<=62){
+              ar.push("nose");
+              document.getElementById("chat-message").value =ar;
+
+
+              console.log("nose")
+            }
+            else if(PosX>=155 && PosX<=241 && PosY>=163 && PosY<=225){
+              ar.push("stomach");
+              document.getElementById("chat-message").value =ar;
+
+
+              console.log("stomach")
+            }
+            else if(PosX>=150 && PosX<=246 && PosY>=112 && PosY<=158){
+              ar.push("chest");
+              document.getElementById("chat-message").value =ar;
+
+
+              console.log("chest")
+            }
+            else if((PosX>=158 && PosX<=191 && PosY>=361 && PosY<=399) || (PosX>=205 && PosX<=236 && PosY>=365 && PosY<=397)){
+              ar.push("knees");
+              document.getElementById("chat-message").value =ar;
+              
+              
+              console.log("knees");
+            }
+            else if(PosX>=143 && PosX<=247 && PosY>=287 && PosY<=526){
+              ar.push("legs");
+              document.getElementById("chat-message").value =ar;
+
+              console.log("legs")
+            }
+            else if((PosX>=27 && PosX<=72 && PosY>=242 && PosY<=284) || (PosX>=324 && PosX<=378 && PosY>=241 && PosY<=279)){
+              ar.push("hands");
+              
+              document.getElementById("chat-message").value =ar;
+              
+              console.log("hands");
+            }
+            else if((PosX>=61 && PosX<=142 && PosY>=107 && PosY<=249) || (PosX>=248 && PosX<=346 && PosY>=108 && PosY<=232)){
+              ar.push("arms");
+              
+              document.getElementById("chat-message").value = ar;
+              
+              console.log("arms")
+            }  
+            else if(PosX>=184 && PosX<=218 && PosY>=82 && PosY<=102){
+              ar.push("neck");
+              
+              document.getElementById("chat-message").value = ar;
+              console.log("neck")
+            }
+            else if(PosX>=156 && PosX<=248 && PosY>=240 && PosY<=278){
+              ar.push("reproductive");
+              
+              document.getElementById("chat-message").value = ar;
+              console.log("reproductive")
+            }
+            else if(PosX>=277 && PosX<=392 && PosY>=334 && PosY<=596){
+              ar.push("other");
+              
+              document.getElementById("chat-message").value = ar;
+              console.log('other')
+            }
+          
+            
+          }
+          function GetCoordinatesBack(e)
+          {
+            var PosX = 0;
+            var PosY = 0;
+            var ImgPos;
+            ImgPos = FindPosition(body_front);
+            if (!e) var e = window.event;
+            if (e.pageX || e.pageY)
+            {
+              PosX = e.pageX;
+              PosY = e.pageY;
+            }
+            else if (e.clientX || e.clientY)
+              {
+                PosX = e.clientX + document.body.scrollLeft
+                  + document.documentElement.scrollLeft;
+                PosY = e.clientY + document.body.scrollTop
+                  + document.documentElement.scrollTop;
+              }
+            PosX = PosX - ImgPos[0];
+            PosY = PosY - ImgPos[1];
+            if(PosX>=554 && PosX<=654 && PosY>=96 && PosY<=222){
+              // console.log("back")
+              ar.push("arms");
+              document.getElementById("chat-message").value =ar;
+            }
+          }
+	</script>
 </head>
 
 <style>
@@ -127,13 +279,7 @@ p { margin: 0; }
 /* ---------- LIVE-CHAT ---------- */
 
 #live-chat {
-	/* bottom: 0;
-	font-size: 12px;
-	right: 24px;
-	position: fixed;
-	width: 300px; */
-    width: 60%;
-    align-self: center;
+	width: 100%
 }
 
 #live-chat header {
@@ -171,7 +317,7 @@ p { margin: 0; }
 	border-radius: 3px;
 	padding: 8px;
 	outline: none;
-	width: 234px;
+	width: 60%;
 }
 
 .chat-message-counter {
@@ -210,14 +356,15 @@ p { margin: 0; }
 }
 
 #chat_history {
-	height: 252px;
-	padding: 8px 24px;
+	height: 400px;
+	padding: 0 0;
     overflow-x: hidden;
 	overflow-y: visible;
 }
 
 .chat-message {
 	margin: 0 0;
+	text-align: right;
     /* background-color: #e62727; */
 }
 
@@ -261,120 +408,99 @@ p { margin: 0; }
 
 .chat-feedback {
 	font-style: italic;	
-	margin: 0 0 0 80px;
+	margin: 0 0 0 0;
 }
+
+.button {
+    background-color: #52AED6; /* Green */
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 2px 2px;
+    cursor: pointer;
+	font: 100%/1.5em "Droid Sans", sans-serif;
+}
+
+.button3 {border-radius: 8px;}
 </style>
 <body>
-    <center style="padding-top: 5%">
-	<div id="live-chat">
-		
-		<header class="clearfix">
-			
-			<!-- <a href="#" class="chat-close">x</a> -->
-
-			<h4>John Doe</h4>
-
-			<span class="chat-message-counter">3</span>
-
-		</header>
-
-		<div class="chat">
-			
-			<div class="chat-history" id="chat_history">
-				
-				<div class="chat-message-reply clearfix">
-					
-                    <!-- <img src="http://gravatar.com/avatar/2c0ad52fc5943b78d6abe069cc08f320?s=32" alt="" width="32" height="32"> -->
-
-					<div class="chat-message-reply-content clearfix">
-						
-						<span class="chat-time-reply">13:35</span>
-
-						<!-- <h5>John Doe</h5> -->
-
-						<p>Hi, How you doing?</p>
-
-					</div>
-
-				</div> 
-
-				<hr>
-
-				<!-- <div class="chat-message clearfix">
-					
-					<div class="chat-message-content clearfix">
-						
-						<span class="chat-time">13:37</span>
-
-						<h5>Marco Biedermann</h5>
-
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, nulla accusamus magni vel debitis numquam qui tempora rem voluptatem delectus!</p>
-
-					</div> 
-
-				</div>  -->
-
-				<hr>
-
-				<!-- <div class="chat-message-reply clearfix">
-					
-                    <div class="chat-message-reply-content clearfix">
-						
-						<span class="chat-time">13:38</span>
-
-						<h5>John Doe</h5>
-
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-
-                    </div> 
-                    
-				</div> -->
-
-				<hr>
-            </div> 
-            
-			<div>
-				<fieldset>
-					<input type="text" placeholder="Type your message…" autofocus id="chat-message">
-					<input type="hidden">
-                </fieldset>
-            </div>
+	
+	<div class="row">
+		<div class="col-sm-4">
+			<img id="body_front" alt="" src="{% static 'img/body_front.jpg' %}" width="400" height="600" />
 		</div>
-    </div>
-    </center>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<div class="col-sm-4">
+			<div id="live-chat" style="width: 100%">
+				<header class="clearfix">
+					<h4>Chat Here</h4>
+				</header>
+				
+				<div class="chat">
+					<div class="chat-history" id="chat_history">
+						<div class="chat-message-reply clearfix">
+							<div class="chat-message-reply-content clearfix">
+								<p>Select The body part where you feel pain.</p>
+							</div>
+							<hr>
+						</div> 
+					</div> 
+					<div>
+						<fieldset>
+							<input type="text" placeholder="Type your message…" autofocus id="chat-message">
+							<button style="float: right" type="button" class="button button3" onclick="send_message()">SUBMIT</button>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<img id="body_back" alt="" src="{% static 'img/body_back.jpg' %}" width="400" height="600" />
+		</div>
+	</div>
 	<script>
-        (function() {
+//         (function() {
 
-$('#live-chat header').on('click', function() {
+// $('#live-chat header').on('click', function() {
 
-    $('.chat').slideToggle(300, 'swing');
-    $('.chat-message-counter').fadeToggle(300, 'swing');
+//     $('.chat').slideToggle(300, 'swing');
+//     $('.chat-message-counter').fadeToggle(300, 'swing');
 
-});
+// });
 
-$('.chat-close').on('click', function(e) {
+// $('.chat-close').on('click', function(e) {
 
-    e.preventDefault();
-    $('#live-chat').fadeOut(300);
+//     e.preventDefault();
+//     $('#live-chat').fadeOut(300);
 
-});
+// });
 
-}) ();
+// }) ();
+
+			var body_front = document.getElementById("body_front");
+			var body_back = document.getElementById("body_back");
+			
+			body_front.onmousedown = GetCoordinatesFront;
+			body_back.onmousedown = GetCoordinatesBack;
+
+
             var p1 = document.getElementById("chat-message");
             p1.addEventListener("keydown", function (e) {
                 if (e.keyCode === 13) {
                     send_message();
                 }
             });
-    
+			var count = 0;
             function send_message()
             {
                 // var elem = document.getElementById('chat_history');
                 // elem.scrollTop = elem.scrollHeight;
-
+				count += 1;
                 $('#chat_history').animate({
-                    scrollTop: $('#chat_history').get(0).scrollHeight}, 2000);    
+                scrollTop: $('#chat_history').get(0).scrollHeight}, 2000);    
 
                 var message = $('#chat-message').val();
                 console.log(message);
@@ -382,7 +508,7 @@ $('.chat-close').on('click', function(e) {
                     url: "{% url 'MedTechUser:send-message' %}",
                     type: "POST",
                     dataType: 'json',
-                    data: { 'message': message, "csrfmiddlewaretoken": '{{ csrf_token }}' },
+                    data: { 'message': message, 'count':count, "csrfmiddlewaretoken": '{{ csrf_token }}' },
                     success: data => {
                         console.log(data.reply);
                         var chat_history = $('#chat_history').html();
@@ -390,8 +516,8 @@ $('.chat-close').on('click', function(e) {
                         // chat_history += message + '<br>';
                         // chat_history += data.reply + '<br>';
 
-                        sender_message = '<div class="chat-message clearfix"><div class="chat-message-content clearfix"><span class="chat-time">13:37</span><p>'+message+'</p></div> </div>' ;
-                        reply_message = '<div class="chat-message-reply clearfix"><div class="chat-message-reply-content clearfix"><span class="chat-time-reply">13:37</span><p>'+data.reply+'</p></div> </div>' ;
+                        sender_message = '<div class="chat-message clearfix"><div class="chat-message-content clearfix"><p>'+message+'</p></div> </div>' ;
+                        reply_message = '<div class="chat-message-reply clearfix"><div class="chat-message-reply-content clearfix"><p>'+data.reply+'</p></div> </div>' ;
                         
                         chat_history += sender_message + '<hr>';
                         chat_history += reply_message + '<hr>';
