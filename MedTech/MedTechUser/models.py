@@ -35,3 +35,7 @@ class TempxAllFeelings(models.Model):
     disease = models.CharField(max_length=100, null=True, blank=True)
     def __str__(self):
         return str(self.name) + " -- " + str(self.disease)
+
+class AskingSymptoms(models.Model):
+    disease = models.CharField(max_length=100, null=True, blank=True)
+    symptom = models.CharField(max_length=100, null=True, blank=True)

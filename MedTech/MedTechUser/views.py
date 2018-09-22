@@ -45,10 +45,24 @@ def sendMessage(request):
         elif count == '2':
             l = query_feeling(message)
             reply = "Let me know if you're feeling anything else like Dizziness or Nausea or Fever or Heavy.."
-            print ("l is ", l)
+            # print ("l is ", l)
             for q in l:
                 print (q)
                 TempxAllFeelings(name = q['name'], disease = q['disease']).save()
+        elif count == '3':
+            x = TempSymptomsToDisease.objects.all()
+            y = TempxAllFeelings.objects.all()
+            li = []
+            for i in x:
+                for j in y:
+                    if i.disease == j.disease:
+                        li.append(i.disease)
+            print (li)
+            for i in li:
+                obj = TempSymptomsToDisease.objects.filter(disease=i)
+                AskingSymptoms(disease = obj.disease, symptom = obj.symptom).save()
+
+                
         context = { 'reply': reply }
         res = JsonResponse(context, status=200)
         res['Access-Control-Allow-Origin']="*"
